@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: ip-service
-        image: rafel0/ip-service:latest
+        image: 
         ports:
         - containerPort: 3001
         resources:

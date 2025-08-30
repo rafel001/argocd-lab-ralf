@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: rafel0/frontend-service:10c9ca6b8591b0c3bc3d17c71d916b2ab7becf67
+        image: 
         ports:
         - containerPort: 3003
         envFrom:

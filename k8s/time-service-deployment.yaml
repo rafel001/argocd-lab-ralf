@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: time-service
-        image: rafel0/time-service:latest
+        image: 
         ports:
         - containerPort: 3000
         resources:
