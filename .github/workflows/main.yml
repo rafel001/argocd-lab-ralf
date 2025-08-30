@@ -4,11 +4,9 @@ on:
   push:
     branches: [ "main" ]
 
-
 permissions:
   contents: write   
 
-  
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -17,7 +15,7 @@ jobs:
         service: [date-service, time-service, ip-service, frontend-service]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Log in to DockerHub
       uses: docker/login-action@v2
@@ -34,21 +32,23 @@ jobs:
         # Update correct manifest in k8s folder
         sed -i "s|image:.*|image: $IMAGE|" k8s/${{ matrix.service }}-deployment.yaml
 
-
-    - uses: actions/upload-artifact@v4
+    - name: Upload manifest artifact
+      uses: actions/upload-artifact@v4
       with:
-        name: manifests
-        path: k8s/
+        name: manifests-${{ matrix.service }}
+        path: k8s/${{ matrix.service }}-deployment.yaml
 
   commit-updates:
     runs-on: ubuntu-latest
     needs: build-and-deploy
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+
+      - name: Download all manifests
+        uses: actions/download-artifact@v4
         with:
-          name: manifests
           path: k8s/
+
       - name: Commit updated manifests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,5 +58,3 @@ jobs:
           git add k8s/
           git commit -m "Update manifests with new images" || echo "No changes"
           git push origin HEAD:main
-
-
