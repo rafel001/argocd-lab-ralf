@@ -36,11 +36,11 @@ jobs:
           docker push $REPO/frontend-service:${{ github.sha }}
 
 
-          sed -i "s|image:.*|image: $IMAGE|" k8s/time-service-deployment.yaml
-          sed -i "s|image:.*|image: $IMAGE|" k8s/date-service-deployment.yaml
-          sed -i "s|image:.*|image: $IMAGE|" k8s/frontend-service-deployment.yaml
-          sed -i "s|image:.*|image: $IMAGE|" k8s/ip-service-deployment.yaml
-
+          # Update manifests
+          sed -i "s|image:.*|image: $REPO/time-service:${{ github.sha }}|" k8s/time-service-deployment.yaml
+          sed -i "s|image:.*|image: $REPO/date-service:${{ github.sha }}|" k8s/date-service-deployment.yaml
+          sed -i "s|image:.*|image: $REPO/ip-service:${{ github.sha }}|" k8s/ip-service-deployment.yaml
+          sed -i "s|image:.*|image: $REPO/frontend-service:${{ github.sha }}|" k8s/frontend-service-deployment.yaml
 
 
 
@@ -49,7 +49,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add k8s/
-          git commit -m "Update image for ${{ matrix.service }}"
+          git commit -m "Update image for services"
           git push
 
 
