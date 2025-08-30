@@ -6,4 +6,4 @@ app.get('/date', (req, res) => {
   res.json({ date: today.toDateString() });
 });
 
-app.listen(3002, () => console.log('Date service running on port 3002'));
+app.listen(3000, () => console.log('Date service running on port 3000'));
