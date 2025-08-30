@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ip-service
+  labels:
+    app: time-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ip-service
+  template:
+    metadata:
+      labels:
+        app: ip-service
+    spec:
+      containers:
+      - name: ip-service
+        image: rafel0/ip-service:159ccbe505d5fd57e11e15f2fcfabdaba6d35566
+        ports:
+        - containerPort: 3001
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ip-service
+spec:
+  selector:
+    app: ip-service
+  ports:
+  - port: 80
+    targetPort: 3000
