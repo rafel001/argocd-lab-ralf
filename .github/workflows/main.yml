@@ -2,59 +2,54 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "maain" ]
+    branches: [ "main" ]
 
 permissions:
   contents: write   
 
 jobs:
-  build-and-deploy:
+  build-and-push-services:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: [date-service, time-service, ip-service, frontend-service]
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Log in to DockerHub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-
-    - name: Build and Push Image
-      run: |
-        IMAGE=rafel0/${{ matrix.service }}:${{ github.sha }}
-        echo "IMAGE=$IMAGE"
-        docker build -t $IMAGE -f ${{ matrix.service }}/Dockerfile ./${{ matrix.service }}
-        docker push $IMAGE
-        # Update correct manifest in k8s folder
-        sed -i "s|image:.*|image: $IMAGE|" k8s/${{ matrix.service }}-deployment.yaml
-
-    - name: Upload manifest artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: manifests-${{ matrix.service }}
-        path: k8s/${{ matrix.service }}-deployment.yaml
-
-  commit-updates:
-    runs-on: ubuntu-latest
-    needs: build-and-deploy
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download all manifests
-        uses: actions/download-artifact@v4
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
         with:
-          path: k8s/
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Image
+        run: |
+          REPO=rafel0
+          echo "IMAGE=$IMAGE"
+          docker build -t  $REPO/time-service:${{ github.sha }} -f time-service/Dockerfile ./time-service
+          docker build -t  $REPO/date-service:${{ github.sha }} -f date-service/Dockerfile ./date-service
+          docker build -t  $REPO/ip-service:${{ github.sha }} -f ip-service/Dockerfile ./ip-service
+          docker build -t  $REPO/frontend-service:${{ github.sha }} -f frontend-service/Dockerfile ./frontend-service
+
+
+
+          docker push $REPO/time-service:${{ github.sha }}
+          docker push $REPO/date-service:${{ github.sha }}
+          docker push $REPO/ip-service:${{ github.sha }}
+          docker push $REPO/frontend-service:${{ github.sha }}
+
+
+          sed -i "s|image:.*|image: $IMAGE|" k8s/time-service-deployment.yaml
+          sed -i "s|image:.*|image: $IMAGE|" k8s/date-service-deployment.yaml
+          sed -i "s|image:.*|image: $IMAGE|" k8s/frontend-service-deployment.yaml
+          sed -i "s|image:.*|image: $IMAGE|" k8s/ip-service-deployment.yaml
+
+
+
 
       - name: Commit updated manifests
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add k8s/
-          git commit -m "Update manifests with new images" || echo "No changes"
-          git push origin HEAD:main
+          git commit -m "Update image for ${{ matrix.service }}"
+          git push
+
+
