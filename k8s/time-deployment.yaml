@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: time-service
-        image: swr.ap-southeast-3.myhuaweicloud.com/george/time-service:v1.0
+        image: rafel0/time-service:latest
         ports:
         - containerPort: 3000
         resources:
