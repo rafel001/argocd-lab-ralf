@@ -42,7 +42,8 @@ jobs:
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         git fetch origin main
-        git pull --rebase origin main   # ✅ rebase to avoid "expected hash" error
-        git add k8s/${{ matrix.service }}-deployment.yaml
-        git commit -m "Update image for ${{ matrix.service }}-service" || echo "No changes to commit"
+        git add k8s/${{ matrix.service }}-deployment.yaml   # ✅ stage first
+        git pull --rebase origin main                       # ✅ rebase with staged changes
+        git commit -m "Update image for ${{ matrix.service }}-service" || echo "No changes"
         git push origin HEAD:main
+
