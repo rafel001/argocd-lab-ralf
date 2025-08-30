@@ -32,4 +32,4 @@ app.get('/ip', (req, res) => {
   res.json({ ip });
 });
 
-app.listen(3001, () => console.log('IP service running on port 3001'));
+app.listen(3000, () => console.log('IP service running on port 3000'));
