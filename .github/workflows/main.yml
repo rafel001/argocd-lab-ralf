@@ -35,7 +35,7 @@ jobs:
         sed -i "s|image:.*|image: $IMAGE|" k8s/${{ matrix.service }}-deployment.yaml
 
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: manifests
         path: k8s/
@@ -44,8 +44,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-deploy
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v3
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
         with:
           name: manifests
           path: k8s/
