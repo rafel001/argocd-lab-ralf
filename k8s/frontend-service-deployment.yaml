@@ -38,7 +38,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: frontend-service
+    app: frontend
   ports:
   - port: 80
     targetPort: 3000
