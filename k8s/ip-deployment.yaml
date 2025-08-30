@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: ip-service
-        image: swr.ap-southeast-3.myhuaweicloud.com/george/ip-service:v1.0
+        image: rafel0/ip-service:latest
         ports:
         - containerPort: 3001
         resources:
@@ -38,4 +38,4 @@ spec:
     app: ip-service
   ports:
   - port: 80
-    targetPort: 3001
+    targetPort: 3000
