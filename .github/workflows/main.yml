@@ -42,8 +42,11 @@ jobs:
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         git fetch origin main
-        git add k8s/${{ matrix.service }}-deployment.yaml   # ✅ stage first
-        git pull --rebase origin main                       # ✅ rebase with staged changes
+        git stash --include-untracked     # ✅ stash edits
+        git pull --rebase origin main
+        git stash pop                     # ✅ restore edits
+        git add k8s/${{ matrix.service }}-deployment.yaml
         git commit -m "Update image for ${{ matrix.service }}-service" || echo "No changes"
         git push origin HEAD:main
+
 
