@@ -23,7 +23,9 @@ jobs:
     - name: Build and Push Image
       run: |
         IMAGE=rafel0/${{ matrix.service }}:${{ github.sha }}
-        docker build -t $IMAGE ./$(matrix.service)
+        echo "IMAGE=$IMAGE"
+        docker build -t $IMAGE -f ${{ matrix.service }}/Dockerfile ./${{ matrix.service }}
+        # docker build -t $IMAGE ./$(matrix.service)
         docker push $IMAGE
         # Update correct manifest in k8s folder
         sed -i "s|image:.*|image: $IMAGE|" k8s/${{ matrix.service }}-deployment.yaml
