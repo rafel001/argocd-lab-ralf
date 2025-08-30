@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: date-service
-        image: swr.ap-southeast-3.myhuaweicloud.com/george/date-service:v1.0
+        image: rafel0/date-service:latest
         ports:
         - containerPort: 3002
         resources:
@@ -39,4 +39,4 @@ spec:
     app: date-service
   ports:
   - port: 80
-    targetPort: 3002
+    targetPort: 3000
