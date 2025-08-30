@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: date-service
+  labels:
+    app: date-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: date-service
+  template:
+    metadata:
+      labels:
+        app: date-service
+    spec:
+      containers:
+      - name: date-service
+        image: swr.ap-southeast-3.myhuaweicloud.com/george/date-service:v1.0
+        ports:
+        - containerPort: 3002
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+      imagePullSecrets:
+      - name: default-secret
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: date-service
+spec:
+  selector:
+    app: date-service
+  ports:
+  - port: 80
+    targetPort: 3002

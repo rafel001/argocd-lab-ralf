@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: swr.ap-southeast-3.myhuaweicloud.com/george/frontend:v1.0
+        ports:
+        - containerPort: 3003
+        envFrom:
+        - configMapRef:
+            name: frontend-config
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+      imagePullSecrets:
+      - name: default-secret      
+---
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: frontend
+  annotations:
+    kubernetes.io/elb.id: <elb-id>                        # ELB ID. Replace it with the actual value.
+    kubernetes.io/elb.class: performance                                              # Load balancer type
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN                   # Load balancer algorithm
+    # kubernetes.io/elb.session-affinity-mode: SOURCE_IP          # The sticky session type is source IP address.
+    # kubernetes.io/elb.session-affinity-option: '{"persistence_timeout": "30"}'     # Stickiness duration (min)
+    kubernetes.io/elb.health-check-flag: 'on'                   # Enable the ELB health check function.
+    kubernetes.io/elb.health-check-option: '{
+      "protocol":"TCP",
+      "delay":"5",
+      "timeout":"10",
+      "max_retries":"3"
+    }'
+spec:
+  selector: 
+     app: frontend
+  ports: 
+  - name: service0 
+    port: 80     # Port for accessing the Service, which is also the listener port on the load balancer.
+    targetPort: 3003  # Port used by a Service to access the target container. This port is closely related to the applications running in a container.
+  type: LoadBalancer

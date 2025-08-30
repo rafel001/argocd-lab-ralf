@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ip-service
+  labels:
+    app: time-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ip-service
+  template:
+    metadata:
+      labels:
+        app: ip-service
+    spec:
+      containers:
+      - name: ip-service
+        image: swr.ap-southeast-3.myhuaweicloud.com/george/ip-service:v1.0
+        ports:
+        - containerPort: 3001
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+      imagePullSecrets:
+      - name: default-secret      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ip-service
+spec:
+  selector:
+    app: ip-service
+  ports:
+  - port: 80
+    targetPort: 3001

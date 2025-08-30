@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: time-service
+  labels:
+    app: time-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: time-service
+  template:
+    metadata:
+      labels:
+        app: time-service
+    spec:
+      containers:
+      - name: time-service
+        image: swr.ap-southeast-3.myhuaweicloud.com/george/time-service:v1.0
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+      imagePullSecrets:
+      - name: default-secret      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: time-service
+spec:
+  selector:
+    app: time-service
+  ports:
+  - port: 80
+    targetPort: 3000
