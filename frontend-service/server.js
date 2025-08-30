@@ -24,4 +24,4 @@ app.get('/api/ip', async (req, res) => {
   res.json(await response.json());
 });
 
-app.listen(3003, () => console.log('Frontend running on port 3003'));
+app.listen(3000, () => console.log('Frontend running on port 3000'));
