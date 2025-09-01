@@ -36,7 +36,6 @@ kind: Service
 metadata:
   name: frontend-service
 spec:
-  type: LoadBalancer
   selector:
     app: frontend
   ports:
