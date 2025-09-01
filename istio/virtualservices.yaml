@@ -1,0 +1,63 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: time-service-vs
+spec:
+  hosts:
+  - "time.ralf.com.ng"
+  gateways:
+  - app-gateway
+  http:
+  - route:
+    - destination:
+        host: time-service
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: date-service-vs
+spec:
+  hosts:
+  - "date.ralf.com.ng"
+  gateways:
+  - app-gateway
+  http:
+  - route:
+    - destination:
+        host: date-service
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ip-service-vs
+spec:
+  hosts:
+  - "ip.ralf.com.ng"
+  gateways:
+  - app-gateway
+  http:
+  - route:
+    - destination:
+        host: ip-service
+        port:
+          number: 80
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: frontend-vs
+spec:
+  hosts:
+  - "app.ralf.com.ng"
+  gateways:
+  - app-gateway
+  http:
+  - route:
+    - destination:
+        host: frontend
+        port:
+          number: 80
