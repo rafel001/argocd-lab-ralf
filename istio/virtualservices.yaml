@@ -10,7 +10,7 @@ spec:
   http:
   - route:
     - destination:
-        host: time-service
+        host: time-service.dev.svc.cluster.local
         port:
           number: 80
 ---
@@ -42,7 +42,7 @@ spec:
   http:
   - route:
     - destination:
-        host: ip-service
+        host: ip-service.dev.svc.cluster.local
         port:
           number: 80
 ---
@@ -58,6 +58,6 @@ spec:
   http:
   - route:
     - destination:
-        host: frontend
+        host: frontend-service.dev.svc.cluster.local
         port:
           number: 80
