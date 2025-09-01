@@ -2,7 +2,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "m2ain" ]
+    branches: [ "main" ]
 
 permissions:
   contents: write   
