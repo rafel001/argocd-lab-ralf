@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: frontend-config
 data:
-  TIME_URL: "http://time-service.default.svc.cluster.local/time"
-  DATE_URL: "http://date-service.default.svc.cluster.local/date"
-  IP_URL: "http://ip-service.default.svc.cluster.local/ip"
+  TIME_URL: "http://time.ralf.com.ng/time"
+  DATE_URL: "http://date.ralf.com.ng/date"
+  IP_URL: "http://ip.ralf.com.ng/ip"
