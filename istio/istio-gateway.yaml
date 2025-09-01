@@ -2,8 +2,10 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: app-gateway
+  namespace: istio-system   # <- same namespace where your istio-ingress runs
 spec:
   selector:
+    app: istio-ingress      # <- matches your pod labels
     istio: ingress
   servers:
   - port:
