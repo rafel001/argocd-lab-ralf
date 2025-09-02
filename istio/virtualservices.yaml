@@ -70,7 +70,7 @@ metadata:
   namespace: dev
 spec:
   hosts:
-  - "api.ralf.com.ng"   # single APIG custom domain
+  - "*"   # single APIG custom domain  "api.ralf.com.ng"
   gateways:
   - app-gateway
   http:
