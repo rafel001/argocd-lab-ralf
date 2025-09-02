@@ -1,3 +1,24 @@
+# apiVersion: networking.istio.io/v1alpha3
+# kind: Gateway
+# metadata:
+#   name: app-gateway
+#   namespace: istio-system   # <- same namespace where your istio-ingress runs
+# spec:
+#   selector:
+#     app: istio-ingress      # <- matches your pod labels
+#     istio: ingress
+#   servers:
+#   - port:
+#       number: 80
+#       name: http
+#       protocol: HTTP
+#     hosts:
+#     - "time.ralf.com.ng"
+#     - "date.ralf.com.ng"
+#     - "ip.ralf.com.ng"
+#     - "app.ralf.com.ng"
+
+
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -13,7 +34,5 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "time.ralf.com.ng"
-    - "date.ralf.com.ng"
-    - "ip.ralf.com.ng"
-    - "app.ralf.com.ng"
+    - "*"
+
