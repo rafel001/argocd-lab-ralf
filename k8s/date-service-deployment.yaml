@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: date-service
-        image: rafel0/date-service:d65cce78e0e82b9f16df253c56e660b40cc72ac8
+        image: rafel0/date-service:8a238b26df07cc68c514c988873658bd80a98d63
         ports:
         - containerPort: 3002
         resources:
