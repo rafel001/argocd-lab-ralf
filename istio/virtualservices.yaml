@@ -72,7 +72,7 @@ spec:
   hosts:
   - "*"   # single APIG custom domain  "api.ralf.com.ng"
   gateways:
-  - app-gateway
+  - istio-system/app-gateway
   http:
   - match:
     - uri:
