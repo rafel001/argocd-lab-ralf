@@ -70,7 +70,7 @@ metadata:
   namespace: dev
 spec:
   hosts:
-  - "*"   # single APIG custom domain  "api.ralf.com.ng"
+  - "api.ralf.com.ng"   # single APIG custom domain  "api.ralf.com.ng"
   gateways:
   - istio-system/app-gateway
   http:
