@@ -34,5 +34,5 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "api.ralf.com.ng"
+    - "*"
 
