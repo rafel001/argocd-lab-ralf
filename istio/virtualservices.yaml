@@ -1,62 +1,110 @@
+# apiVersion: networking.istio.io/v1alpha3
+# kind: VirtualService
+# metadata:
+#   name: time-service-vs
+# spec:
+#   hosts:
+#   - "time.ralf.com.ng"
+#   gateways:
+#   - app-gateway
+#   http:
+#   - route:
+#     - destination:
+#         host: time-service.dev.svc.cluster.local
+#         port:
+#           number: 80
+# ---
+# apiVersion: networking.istio.io/v1alpha3
+# kind: VirtualService
+# metadata:
+#   name: date-service-vs
+# spec:
+#   hosts:
+#   - "date.ralf.com.ng"
+#   gateways:
+#   - app-gateway
+#   http:
+#   - route:
+#     - destination:
+#         host: date-service.dev.svc.cluster.local
+#         port:
+#           number: 80
+# ---
+# apiVersion: networking.istio.io/v1alpha3
+# kind: VirtualService
+# metadata:
+#   name: ip-service-vs
+# spec:
+#   hosts:
+#   - "ip.ralf.com.ng"
+#   gateways:
+#   - app-gateway
+#   http:
+#   - route:
+#     - destination:
+#         host: ip-service.dev.svc.cluster.local
+#         port:
+#           number: 80
+# ---
+# apiVersion: networking.istio.io/v1alpha3
+# kind: VirtualService
+# metadata:
+#   name: frontend-vs
+# spec:
+#   hosts:
+#   - "app.ralf.com.ng"
+#   gateways:
+#   - app-gateway
+#   http:
+#   - route:
+#     - destination:
+#         host: frontend-service.dev.svc.cluster.local
+#         port:
+#           number: 80
+
+
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: time-service-vs
+  name: app-services
+  namespace: dev
 spec:
   hosts:
-  - "time.ralf.com.ng"
+  - "api.ralf.com.ng"   # single APIG custom domain
   gateways:
   - app-gateway
   http:
-  - route:
+  - match:
+    - uri:
+        prefix: /time
+    route:
     - destination:
         host: time-service.dev.svc.cluster.local
         port:
           number: 80
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: date-service-vs
-spec:
-  hosts:
-  - "date.ralf.com.ng"
-  gateways:
-  - app-gateway
-  http:
-  - route:
+
+  - match:
+    - uri:
+        prefix: /date
+    route:
     - destination:
         host: date-service.dev.svc.cluster.local
         port:
           number: 80
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: ip-service-vs
-spec:
-  hosts:
-  - "ip.ralf.com.ng"
-  gateways:
-  - app-gateway
-  http:
-  - route:
+
+  - match:
+    - uri:
+        prefix: /ip
+    route:
     - destination:
         host: ip-service.dev.svc.cluster.local
         port:
           number: 80
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: frontend-vs
-spec:
-  hosts:
-  - "app.ralf.com.ng"
-  gateways:
-  - app-gateway
-  http:
-  - route:
+
+  - match:
+    - uri:
+        prefix: /app
+    route:
     - destination:
         host: frontend-service.dev.svc.cluster.local
         port:
