@@ -16,8 +16,8 @@ jobs:
       - name: Build and Push Image
         run: |
           docker login -u af-south-1@HST3UO9IGTJFZUEUNVLJ -p 17227ec551c29000378c99d9623178792861cb5681a524149158e8c59bc2bd31 swr.af-south-1.myhuaweicloud.com
-          docker build -t swr.af-south-1.myhuaweicloud.com/ralf/time-service:${{ github.sha }} -f time-service/Dockerfile ./time-service
-          docker push swr.af-south-1.myhuaweicloud.com/ralf/time-service:${{ github.sha }}
+          docker build -t swr.af-south-1.myhuaweicloud.com/ralf/time-service:1.0.0 -f time-service/Dockerfile ./time-service
+          docker push swr.af-south-1.myhuaweicloud.com/ralf/time-service:1.0.0
 
 
 
