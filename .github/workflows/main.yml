@@ -4,8 +4,7 @@ on:
   push:
     branches: [ "main" ]
 
-permissions:
-  contents: write   
+
 
 jobs:
   build-and-push-services:
@@ -15,41 +14,33 @@ jobs:
 
       - name: Log in to DockerHub
         uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and Push Image
         run: |
-          REPO=rafel0
-          echo "IMAGE=$IMAGE"
-          docker build -t  $REPO/time-service:${{ github.sha }} -f time-service/Dockerfile ./time-service
-          docker build -t  $REPO/date-service:${{ github.sha }} -f date-service/Dockerfile ./date-service
-          docker build -t  $REPO/ip-service:${{ github.sha }} -f ip-service/Dockerfile ./ip-service
-          docker build -t  $REPO/frontend-service:${{ github.sha }} -f frontend-service/Dockerfile ./frontend-service
+          docker login -u af-south-1@HST3UO9IGTJFZUEUNVLJ -p 17227ec551c29000378c99d9623178792861cb5681a524149158e8c59bc2bd31 swr.af-south-1.myhuaweicloud.com
+          docker build -t swr.af-south-1.myhuaweicloud.com/ralf/time-service:${{ github.sha }} -f time-service/Dockerfile ./time-service
+          docker push swr.af-south-1.myhuaweicloud.com/ralf/time-service:${{ github.sha }}
 
 
 
-          docker push $REPO/time-service:${{ github.sha }}
-          docker push $REPO/date-service:${{ github.sha }}
-          docker push $REPO/ip-service:${{ github.sha }}
-          docker push $REPO/frontend-service:${{ github.sha }}
+      # - name: Update CAE Image
+      #   run: |      
+      #     hcloud CAE ExecuteAction \
+      #       --X-Environment-ID="$ENV_ID" \
+      #       --api_version="v1" \
+      #       --application_id="$APP_ID" \
+      #       --component_id="$COMPONENT_ID" \
+      #       --X-Enterprise-Project-ID="$EPI" \
+      #       --kind="Action" \
+      #       --project_id="$PROJECT_ID" \
+      #       --metadata.name="upgrade" \
+      #       --metadata.annotations.version="$VERSION" \
+      #       --spec.source.type="code" \
+      #       --spec.source.sub_type="GitHub" \
+      #       --spec.source.url="$URL" \
+      #       --spec.source.code.branch="main" \
+      #       --spec.source.code.auth_name="$AUTH_NAME" \
+      #       --spec.source.code.namespace="$NAMESPACE"
 
-
-          # Update manifests
-          sed -i "s|image:.*|image: $REPO/time-service:${{ github.sha }}|" k8s/time-service-deployment.yaml
-          sed -i "s|image:.*|image: $REPO/date-service:${{ github.sha }}|" k8s/date-service-deployment.yaml
-          sed -i "s|image:.*|image: $REPO/ip-service:${{ github.sha }}|" k8s/ip-service-deployment.yaml
-          sed -i "s|image:.*|image: $REPO/frontend-service:${{ github.sha }}|" k8s/frontend-service-deployment.yaml
-
-
-
-      - name: Commit updated manifests
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add k8s/
-          git commit -m "Update image for services"
-          git push
 
 
