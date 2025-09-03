@@ -40,7 +40,7 @@ jobs:
       #       --spec.source.url="$URL" \
       #       --spec.source.code.branch="main" \
       #       --spec.source.code.auth_name="$AUTH_NAME" \
-      #       --spec.source.code.namespace="$NAMESPACE"
+      #       --spec.source.code.namespace="$NAMESPACE" c
 
 
 
